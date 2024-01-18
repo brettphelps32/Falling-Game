@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Falling Game</title>
+    <style>
+        *{
+            margin:0;
+            overflow: hidden;
+        }
+    </style>
+</head>
+
+<body>
+    
+    <canvas id = "canvas"></canvas>
+
+    <script type = "module">
+        "use strict"
+
+        import time from "./engine/time.js"
+        import {getCanvas} from "./engine/scripts.js"
+        import input from "./engine/input.js"
+        
+        import scene from "./engine/scene.js"
+        import mainScene from "./fallingGame/mainScene.js"
+        import startScene from "./fallingGame/startScene.js"
+        import endScene from "./fallingGame/endScene.js"
+        import game from "./engine/game.js"
+        
+
+        input.attach(document);
+
+        let main = new mainScene();
+        let StartScene = new startScene();
+        let end = new endScene();
+        game.scenes.push(StartScene);
+        game.scenes.push(main);
+        game.scenes.push(end);
+        game.changeScene(0);
+        let highScore = 0;
+
+        function tick(){
+            let { canvas, ctx } = getCanvas();
+            game.updateScene();
+            input.update();
+            game.scene().update(ctx);
+            game.scene().draw(ctx);
+            game.scene().remove();
+            time.timePassed += time.secondsBewteenFrame;
+
+        }
+        setInterval(tick,time.millisecondsBetweenFrames)
+    </script>
+</body>
+</html>
